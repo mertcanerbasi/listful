@@ -13,13 +13,15 @@ class MoodRepositoryImpl implements MoodRepository {
   @override
   Mood? getMood(DateTime date) {
     var yyyyMMdd = date.toYyyyMmDd();
-    final mood = _localDataSource.getData(yyyyMMdd, Mood.fromJson);
+    var key = '${yyyyMMdd}_mood';
+    final mood = _localDataSource.getData(key, Mood.fromJson);
     return mood;
   }
 
   @override
   Future<void> saveMood(Mood mood, DateTime date) async {
     var yyyyMMdd = date.toYyyyMmDd();
-    await _localDataSource.setData(yyyyMMdd, mood, (m) => m.toJson());
+    var key = '${yyyyMMdd}_mood';
+    await _localDataSource.setData(key, mood, (m) => m.toJson());
   }
 }

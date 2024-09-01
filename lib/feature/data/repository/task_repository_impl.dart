@@ -21,10 +21,10 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> saveTask(Task task, DateTime date) async {
     var yyyyMMdd = date.toYyyyMmDd();
     var taskList = getTaskList(date);
-    if (taskList == null && taskList?.tasks == null) {
+    if (taskList == null || taskList.tasks == null) {
       taskList = TaskList(tasks: [task]);
     } else {
-      taskList!.tasks!.add(task);
+      taskList.tasks!.add(task);
     }
     await _localDataSource.setData(yyyyMMdd, taskList, (m) => m.toJson());
   }

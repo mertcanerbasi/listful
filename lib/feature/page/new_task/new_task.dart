@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:listfull/core/base/base_widget.dart';
+import 'package:listfull/core/extensions/datetime_extensions.dart';
 import 'package:listfull/core/res/colors.gen.dart';
 import 'package:listfull/core/res/theme.dart';
 import 'package:listfull/feature/data/model/enums/priority_enums.dart';
+import 'package:listfull/feature/data/model/task.dart';
 import 'package:listfull/feature/page/new_task/new_task_vm.dart';
+import 'package:listfull/feature/widgets/app_buttons.dart';
 import 'package:listfull/feature/widgets/app_labels.dart';
 import 'package:listfull/feature/widgets/scaffold_body.dart';
 import 'package:route_map/route_map.dart';
@@ -23,42 +26,18 @@ class _NewTaskState extends BaseState<NewTaskViewModel, NewTaskPage> {
   final TextEditingController _taskDescriptionController =
       TextEditingController();
   final TextEditingController _taskDateController = TextEditingController();
-  final TextEditingController _taskPomodorosController =
-      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _taskDateController.text = viewModel.taskDate.toYyyyMmDd();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My New Task 💎'), //Diamond Symbol
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: GestureDetector(
-        onTap: () {},
-        child: Container(
-          width: 200,
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            border: Border.all(
-              color: AppColors.primary,
-              width: 2,
-            ),
-            gradient: const LinearGradient(
-              colors: [AppColors.primary, AppColors.secondary],
-            ),
-          ),
-          child: const Center(
-            child: Text(
-              'Create Task',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
       ),
       body: ScaffoldBody(
         isLoading: false,
@@ -73,7 +52,6 @@ class _NewTaskState extends BaseState<NewTaskViewModel, NewTaskPage> {
                 _taskTitleController,
                 _taskDescriptionController,
                 _taskDateController,
-                _taskPomodorosController,
               ],
             ),
           ],
@@ -220,22 +198,82 @@ class TaskFieldsWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
-        TextField(
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          controller: controllers[3],
-          readOnly: true,
-          onTap: () {},
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            hintText: 'Enter number of pomodoros 🍅',
-            hintStyle: const TextStyle(color: Colors.grey),
-            border: AppTheme.noRoundedInputBorder,
-            enabledBorder: AppTheme.noRoundedInputBorder,
-            focusedBorder: AppTheme.noRoundedInputBorder,
-            filled: true,
-            fillColor: AppColors.cardBackground,
+        const Text(
+          'How many pomodoros will you spend on this task? 🍅',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
           ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: IconButton(
+                icon: const Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                onPressed: () {
+                  viewModel.decreasePomodoro();
+                },
+              ),
+            ),
+            Expanded(
+              child: ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return const LinearGradient(
+                    colors: [AppColors.primary, AppColors.secondary],
+                  ).createShader(bounds);
+                },
+                child: Text(
+                  viewModel.pomodoroCount.toString(),
+                  style: const TextStyle(color: Colors.white, fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                icon: const Icon(Icons.add, color: Colors.white, size: 24),
+                onPressed: () {
+                  viewModel.increasePomodoro();
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 50),
+        AppButtons.gradientBorderButton(
+          text: 'Create Task',
+          onPressed: () async {
+            if (viewModel.checkTaskValid(
+              Task(
+                title: controllers[0].text,
+                description: controllers[1].text,
+                completed: false,
+                priority: viewModel.selectedPriority,
+                timePiece: viewModel.pomodoroCount,
+                id: DateTime.now().millisecondsSinceEpoch,
+              ),
+            )) {
+              await viewModel
+                  .saveTask(
+                Task(
+                  title: controllers[0].text,
+                  description: controllers[1].text,
+                  completed: false,
+                  priority: viewModel.selectedPriority,
+                  timePiece: viewModel.pomodoroCount,
+                  id: DateTime.now().millisecondsSinceEpoch,
+                ),
+              )
+                  .then((value) {
+                Navigator.pop(context, true);
+              });
+            }
+          },
         ),
       ],
     );

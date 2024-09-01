@@ -43,7 +43,11 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
                 SettingsRoute().push(context);
               },
               onAddTaskPressed: () {
-                NewTaskRoute().push(context);
+                NewTaskRoute().push(context).then((value) {
+                  if (value == true) {
+                    viewModel.getTaskList();
+                  }
+                });
               },
               taskCount: viewModel.taskCount,
             ),

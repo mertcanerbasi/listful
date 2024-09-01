@@ -53,7 +53,6 @@ extension GetItInjectableX on _i174.GetIt {
     final apiModule = _$ApiModule();
     final appModule = _$AppModule();
     gh.lazySingleton<_i361.Dio>(() => apiModule.injectRetrofitAPI);
-    gh.factory<_i361.NewTaskViewModel>(() => _i361.NewTaskViewModel());
     gh.singleton<_i481.AppConfig>(
       () => _i481.AppConfigDevImpl(),
       registerFor: {_dev},
@@ -122,6 +121,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i211.FeelingViewModel(gh<_i42.MoodRepository>()));
     gh.factory<_i454.HomeViewModel>(
         () => _i454.HomeViewModel(gh<_i742.TaskRepository>()));
+    gh.factory<_i361.NewTaskViewModel>(
+        () => _i361.NewTaskViewModel(gh<_i742.TaskRepository>()));
     return this;
   }
 }

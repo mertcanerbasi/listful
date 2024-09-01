@@ -26,6 +26,7 @@ class AppTheme {
         colorScheme: colorScheme,
         scaffoldBackgroundColor: AppColors.background,
         fontFamily: "Inter",
+        splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
           centerTitle: false,
           scrolledUnderElevation: 0,
@@ -119,6 +120,6 @@ class AppTheme {
   static var inputBorder = OutlineInputBorder(
     gapPadding: 4,
     borderSide: const BorderSide(color: Colors.grey),
-    borderRadius: BorderRadius.circular(8),
+    borderRadius: BorderRadius.circular(50),
   );
 }

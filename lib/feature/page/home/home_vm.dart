@@ -54,4 +54,8 @@ class HomeViewModel extends BaseViewModel {
     _currentDate = currentDate;
     notifyListeners();
   }
+
+  void addIdea(String idea) {
+    //TODO add idea
+  }
 }

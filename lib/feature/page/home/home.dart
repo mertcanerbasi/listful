@@ -5,7 +5,9 @@ import 'package:listfull/feature/page/home/home_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:listfull/feature/widgets/app_labels.dart';
 import 'package:listfull/feature/widgets/days_list_widget.dart';
+import 'package:listfull/feature/widgets/progress_widget.dart';
 import 'package:listfull/feature/widgets/scaffold_body.dart';
+import 'package:listfull/feature/widgets/total_tasks_widget.dart';
 import 'package:route_map/route_map.dart';
 
 @RouteMap(name: "/")
@@ -103,84 +105,77 @@ class DayManagementWidget extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        Container(
-          child: Column(
-            children: [
-              ListTile(
-                title: const Text("Total Tasks",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    )),
-                subtitle: const Text(
-                  "Daily tasks",
+        TotalTasksWidget(
+          completedTasks: viewModel.completedTasks,
+          taskCount: viewModel.taskCount,
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                leading: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.graphic_eq,
-                    color: Colors.white,
-                  ),
-                ),
-                trailing: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    "${viewModel.completedTasks}/${viewModel.taskCount}",
-                    style: const TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                width: double.maxFinite,
-                height: 3,
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: viewModel.completedTasks,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primary,
-                              AppColors.secondary,
-                            ],
-                          ),
-                        ),
-                        height: 3,
+                    const Text(
+                      "Tasks marked in the",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
                       ),
                     ),
-                    Expanded(
-                      flex: viewModel.taskCount - viewModel.completedTasks,
-                      child: Container(
-                        color: AppColors.primary.withOpacity(0.2),
-                        height: 3,
+                    ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return const LinearGradient(
+                          colors: <Color>[
+                            AppColors.primary,
+                            AppColors.secondary
+                          ],
+                        ).createShader(bounds);
+                      },
+                      child: const Text(
+                        "last 7 days",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    ProgressWidget(
+                      completedTasks: viewModel.last7daysCompletedTasks,
+                      taskCount: viewModel.last7daysTaskCount,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                      "%${((viewModel.last7daysCompletedTasks / viewModel.last7daysTaskCount) * 100).toStringAsFixed(0)}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
-        )
+              ),
+            ),
+            Expanded(
+              child: Container(),
+            )
+          ],
+        ),
       ],
     );
   }

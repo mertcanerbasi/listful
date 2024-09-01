@@ -28,4 +28,9 @@ class TaskRepositoryImpl implements TaskRepository {
     }
     await _localDataSource.setData(yyyyMMdd, taskList, (m) => m.toJson());
   }
+
+  @override
+  Future<void> clear() async {
+    await _localDataSource.clear();
+  }
 }

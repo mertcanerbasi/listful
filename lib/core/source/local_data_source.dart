@@ -29,7 +29,7 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> clear() async {
-    return;
+    return _getStorage.erase();
   }
 
   @override

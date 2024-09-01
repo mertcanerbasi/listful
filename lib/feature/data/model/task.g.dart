@@ -20,7 +20,9 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       title: json['title'] as String,
       id: (json['id'] as num).toInt(),
       completed: json['completed'] as bool,
-      timePiece: (json['timePiece'] as num).toInt(),
+      timePiece: (json['timePiece'] as List<dynamic>)
+          .map((e) => Pomodoro.fromJson(e as Map<String, dynamic>))
+          .toList(),
       description: json['description'] as String,
       priority: $enumDecode(_$PriorityEnumsEnumMap, json['priority']),
     );
@@ -39,3 +41,13 @@ const _$PriorityEnumsEnumMap = {
   PriorityEnums.medium: 'medium',
   PriorityEnums.high: 'high',
 };
+
+Pomodoro _$PomodoroFromJson(Map<String, dynamic> json) => Pomodoro(
+      minutes: (json['minutes'] as num).toInt(),
+      completed: json['completed'] as bool,
+    );
+
+Map<String, dynamic> _$PomodoroToJson(Pomodoro instance) => <String, dynamic>{
+      'minutes': instance.minutes,
+      'completed': instance.completed,
+    };

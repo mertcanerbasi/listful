@@ -10,6 +10,10 @@ class HomeViewModel extends BaseViewModel {
 
   HomeViewModel(this._taskRepository);
 
+  Future<void> clear() async {
+    return await _taskRepository.clear();
+  }
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   void setisLoading(bool isLoading) {

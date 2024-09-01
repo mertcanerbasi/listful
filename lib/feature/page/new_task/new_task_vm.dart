@@ -24,6 +24,13 @@ class NewTaskViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  int _pomodoroTime = 25;
+  int get pomodoroTime => _pomodoroTime;
+  void setpomodoroTime(int pomodoroTime) {
+    _pomodoroTime = pomodoroTime;
+    notifyListeners();
+  }
+
   int _pomodoroCount = 1;
   int get pomodoroCount => _pomodoroCount;
   void setpomodoroCount(int pomodoroCount) {
@@ -52,8 +59,8 @@ class NewTaskViewModel extends BaseViewModel {
         task.title.length > 50 ||
         task.description.length < 3 ||
         task.description.length > 100 ||
-        task.timePiece < 1 ||
-        task.timePiece > 10) {
+        task.timePiece.isEmpty ||
+        task.timePiece.length > 10) {
       return false;
     } else {
       return true;

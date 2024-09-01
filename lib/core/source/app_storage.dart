@@ -30,4 +30,6 @@ class AppStorage {
       ? _storage.remove(AesEncrypt.encrypt(key))
       : _storage.setString(
           AesEncrypt.encrypt(key), AesEncrypt.encrypt(value.toString()));
+
+  Future<void> erase() => _storage.clear();
 }

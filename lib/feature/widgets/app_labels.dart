@@ -167,6 +167,7 @@ class AppLabels {
     required String text,
     required VoidCallback onPressed,
     required bool isSelected,
+    required Color? color,
   }) {
     return GestureDetector(
       onTap: onPressed,
@@ -174,7 +175,7 @@ class AppLabels {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary.withOpacity(0.2)
+              ? (color?.withOpacity(0.2) ?? AppColors.primary.withOpacity(0.2))
               : AppColors.cardBackground,
           borderRadius: BorderRadius.circular(50),
         ),
@@ -186,7 +187,7 @@ class AppLabels {
             Text(
               text,
               style: TextStyle(
-                color: isSelected ? AppColors.primary : Colors.grey,
+                color: isSelected ? (color ?? AppColors.primary) : Colors.grey,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),

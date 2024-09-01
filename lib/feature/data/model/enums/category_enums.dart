@@ -1,1 +1,1 @@
-enum CategoryEnums { tasks, overview, reminders }
+enum CategoryEnums { tasks, overview, notes }

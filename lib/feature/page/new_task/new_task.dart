@@ -26,11 +26,13 @@ class _NewTaskState extends BaseState<NewTaskViewModel, NewTaskPage> {
   final TextEditingController _taskDescriptionController =
       TextEditingController();
   final TextEditingController _taskDateController = TextEditingController();
+  final TextEditingController _taskTimeController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _taskDateController.text = viewModel.taskDate.toYyyyMmDd();
+    _taskTimeController.text = '${viewModel.pomodoroTime} minutes';
   }
 
   @override
@@ -52,6 +54,7 @@ class _NewTaskState extends BaseState<NewTaskViewModel, NewTaskPage> {
                 _taskTitleController,
                 _taskDescriptionController,
                 _taskDateController,
+                _taskTimeController,
               ],
             ),
           ],
@@ -244,6 +247,32 @@ class TaskFieldsWidget extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 16),
+        const Text(
+          'Pomodoro Time',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+          controller: controllers[3],
+          readOnly: true,
+          onTap: () {},
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.hourglass_bottom, color: Colors.white),
+            hintText: '',
+            hintStyle: const TextStyle(color: Colors.grey),
+            border: AppTheme.noRoundedInputBorder,
+            enabledBorder: AppTheme.noRoundedInputBorder,
+            focusedBorder: AppTheme.noRoundedInputBorder,
+            filled: true,
+            fillColor: AppColors.cardBackground,
+          ),
+        ),
         const SizedBox(height: 50),
         AppButtons.gradientBorderButton(
           text: 'Create Task',
@@ -254,7 +283,13 @@ class TaskFieldsWidget extends StatelessWidget {
                 description: controllers[1].text,
                 completed: false,
                 priority: viewModel.selectedPriority,
-                timePiece: viewModel.pomodoroCount,
+                timePiece: List.generate(
+                  viewModel.pomodoroCount,
+                  (index) => Pomodoro(
+                    completed: false,
+                    minutes: viewModel.pomodoroTime,
+                  ),
+                ),
                 id: DateTime.now().millisecondsSinceEpoch,
               ),
             )) {
@@ -265,7 +300,13 @@ class TaskFieldsWidget extends StatelessWidget {
                   description: controllers[1].text,
                   completed: false,
                   priority: viewModel.selectedPriority,
-                  timePiece: viewModel.pomodoroCount,
+                  timePiece: List.generate(
+                    viewModel.pomodoroCount,
+                    (index) => Pomodoro(
+                      completed: false,
+                      minutes: viewModel.pomodoroTime,
+                    ),
+                  ),
                   id: DateTime.now().millisecondsSinceEpoch,
                 ),
               )

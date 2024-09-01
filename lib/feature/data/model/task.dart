@@ -22,7 +22,7 @@ class Task {
   final String title;
   final int id;
   final bool completed;
-  final int timePiece;
+  final List<Pomodoro> timePiece;
   final String description;
   final PriorityEnums priority;
 
@@ -41,4 +41,22 @@ class Task {
   }
 
   Map<String, dynamic> toJson() => _$TaskToJson(this);
+}
+
+@JsonSerializable()
+class Pomodoro {
+  final int minutes;
+  final bool completed;
+
+  Pomodoro({
+    required this.minutes,
+    required this.completed,
+  });
+
+  //Json serialization
+  factory Pomodoro.fromJson(Map<String, dynamic> json) {
+    return _$PomodoroFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$PomodoroToJson(this);
 }

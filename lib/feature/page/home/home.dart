@@ -5,13 +5,11 @@ import 'package:listfull/feature/page/home/home_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:listfull/feature/router/app_router.routes.dart';
 import 'package:listfull/feature/widgets/app_labels.dart';
-import 'package:listfull/feature/widgets/day_statistics_widget.dart';
-import 'package:listfull/feature/widgets/days_list_widget.dart';
 import 'package:listfull/feature/widgets/feeling_widget/feeling_widget.dart';
-import 'package:listfull/feature/widgets/last_7_days_compilation_widget.dart';
 import 'package:listfull/feature/widgets/new_idea_widget.dart';
+import 'package:listfull/feature/widgets/overview_widget.dart';
 import 'package:listfull/feature/widgets/scaffold_body.dart';
-import 'package:listfull/feature/widgets/total_tasks_widget.dart';
+import 'package:listfull/feature/widgets/tasks_view_widget.dart';
 import 'package:route_map/route_map.dart';
 
 @RouteMap(name: "/")
@@ -27,6 +25,7 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
   @override
   void initState() {
     super.initState();
+    //viewModel.clear();
     viewModel.getTaskList();
   }
 
@@ -103,6 +102,7 @@ class DayManagementWidget extends StatelessWidget {
             children: [
               AppLabels.categoryLabel(
                 text: "Overview",
+                color: AppColors.primary,
                 isSelected:
                     viewModel.selectedCategory == CategoryEnums.overview,
                 onPressed: () {
@@ -112,6 +112,7 @@ class DayManagementWidget extends StatelessWidget {
               const SizedBox(width: 8),
               AppLabels.categoryLabel(
                 text: "Tasks (${viewModel.taskCount})",
+                color: AppColors.primary,
                 isSelected: viewModel.selectedCategory == CategoryEnums.tasks,
                 onPressed: () {
                   viewModel.setselectedCategory(CategoryEnums.tasks);
@@ -119,11 +120,11 @@ class DayManagementWidget extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               AppLabels.categoryLabel(
-                text: "Reminders",
-                isSelected:
-                    viewModel.selectedCategory == CategoryEnums.reminders,
+                text: "Notes",
+                color: AppColors.primary,
+                isSelected: viewModel.selectedCategory == CategoryEnums.notes,
                 onPressed: () {
-                  viewModel.setselectedCategory(CategoryEnums.reminders);
+                  viewModel.setselectedCategory(CategoryEnums.notes);
                 },
               ),
             ],
@@ -132,125 +133,32 @@ class DayManagementWidget extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        DaysList(
-          viewModel: viewModel,
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        TotalTasksWidget(
-          completedTasks: viewModel.completedTasks,
-          taskCount: viewModel.taskCount,
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Row(
-          children: [
-            Last7DaysCompilationWidget(
-              last7daysCompletedTasks: viewModel.last7daysCompletedTasks,
-              last7daysTaskCount: viewModel.last7daysTaskCount,
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Container(
-                height: 130,
-                decoration: BoxDecoration(
-                  color: AppColors.cardBackground,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ShaderMask(
-                          shaderCallback: (Rect bounds) {
-                            return const LinearGradient(
-                              colors: <Color>[
-                                AppColors.primary,
-                                AppColors.secondary,
-                              ],
-                            ).createShader(bounds);
-                          },
-                          child: const Text(
-                            "Last 7 Days",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const Text(
-                          " Statistics",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Mon",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Tue",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Wed",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Thu",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Fri",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Sat",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Sun",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: _getSelectedWidget(viewModel.selectedCategory),
         ),
       ],
     );
+  }
+
+  Widget _getSelectedWidget(CategoryEnums category) {
+    switch (category) {
+      case CategoryEnums.overview:
+        return OverViewWidget(
+            viewModel: viewModel, key: const ValueKey('overview'));
+      case CategoryEnums.tasks:
+        return TasksViewWidget(
+          taskList: viewModel.taskList,
+          key: const ValueKey('tasks'),
+        );
+      case CategoryEnums.notes:
+        return const Text("Notes", key: ValueKey('notes'));
+      default:
+        return Container();
+    }
   }
 }
 

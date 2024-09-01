@@ -12,6 +12,12 @@ class FeelingWidget extends StatefulWidget {
 
 class _FeelingState extends BaseState<FeelingViewModel, FeelingWidget> {
   @override
+  void initState() {
+    super.initState();
+    viewModel.getMood();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double chipWidth = (MediaQuery.of(context).size.width - 60) / 3;
 
@@ -19,7 +25,7 @@ class _FeelingState extends BaseState<FeelingViewModel, FeelingWidget> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Text(
-          "How are you feeling this morning?",
+          "How are you feeling today?",
           style: TextStyle(
             fontSize: 20,
             color: Colors.white,
@@ -39,8 +45,7 @@ class _FeelingState extends BaseState<FeelingViewModel, FeelingWidget> {
           spacing: 8.0, // Space between the chips horizontally
           runSpacing: 8.0, // Space between the chips vertically
           children: viewModel.moodList.map((mood) {
-            bool isSelected = mood == viewModel.selectedMood;
-
+            bool isSelected = mood.emoji == viewModel.selectedMood?.emoji;
             return GestureDetector(
               onTap: () {
                 viewModel.setselectedMood(mood);

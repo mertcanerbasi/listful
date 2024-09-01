@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:listfull/core/source/app_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -12,6 +14,10 @@ abstract class LocalDataSource {
 
   String? get email;
   Future setEmail(String? email);
+
+  Future<void> setData<T>(
+      String key, T model, Map<String, dynamic> Function(T) toJson);
+  T? getData<T>(String key, T Function(Map<String, dynamic>) fromJson);
 }
 
 @Environment(Environment.prod)
@@ -50,11 +56,30 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future setLocale(Locale locale) {
     return _getStorage.write("locale", locale);
   }
+
+  @override
+  T? getData<T>(String key, T Function(Map<String, dynamic> p1) fromJson) {
+    final jsonString = _getStorage.read<String>(key);
+    if (jsonString != null) {
+      final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+      return fromJson(jsonMap);
+    }
+    return null;
+  }
+
+  @override
+  Future<void> setData<T>(
+      String key, T model, Map<String, dynamic> Function(T) toJson) {
+    final jsonString = jsonEncode(toJson(
+        model)); // Convert to JSON string using the provided toJson function
+    return _getStorage.write(key, jsonString);
+  }
 }
 
 @Environment(Environment.test)
 @Singleton(as: LocalDataSource)
 class TestLocalDataSourceImpl implements LocalDataSource {
+  final Map<String, String> _storage = {};
   @override
   Future<void> clear() async {
     return;
@@ -88,5 +113,22 @@ class TestLocalDataSourceImpl implements LocalDataSource {
   Future setAppearance(ThemeMode themeMode) async {
     _themeMode = themeMode;
     return;
+  }
+
+  @override
+  Future<void> setData<T>(
+      String key, T model, Map<String, dynamic> Function(T) toJson) async {
+    final jsonString = jsonEncode(toJson(model)); // Convert to JSON string
+    _storage[key] = jsonString;
+  }
+
+  @override
+  T? getData<T>(String key, T Function(Map<String, dynamic>) fromJson) {
+    final jsonString = _storage[key];
+    if (jsonString != null) {
+      final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+      return fromJson(jsonMap);
+    }
+    return null;
   }
 }

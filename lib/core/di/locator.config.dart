@@ -20,6 +20,9 @@ import 'package:listfull/core/source/local_data_source.dart' as _i855;
 import 'package:listfull/feature/data/repository/app_repository.dart' as _i380;
 import 'package:listfull/feature/data/repository/app_repository_impl.dart'
     as _i634;
+import 'package:listfull/feature/data/repository/mood_repository.dart' as _i42;
+import 'package:listfull/feature/data/repository/mood_repository_impl.dart'
+    as _i693;
 import 'package:listfull/feature/data/service/app_service.dart' as _i655;
 import 'package:listfull/feature/page/app/app_vm.dart' as _i78;
 import 'package:listfull/feature/page/home/home_vm.dart' as _i454;
@@ -47,7 +50,6 @@ extension GetItInjectableX on _i174.GetIt {
     final appModule = _$AppModule();
     gh.lazySingleton<_i361.Dio>(() => apiModule.injectRetrofitAPI);
     gh.factory<_i454.HomeViewModel>(() => _i454.HomeViewModel());
-    gh.factory<_i211.FeelingViewModel>(() => _i211.FeelingViewModel());
     gh.singleton<_i481.AppConfig>(
       () => _i481.AppConfigDevImpl(),
       registerFor: {_dev},
@@ -102,12 +104,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i843.SettingsViewModel>(
         () => _i843.SettingsViewModel(gh<_i655.PackageInfo>()));
+    gh.lazySingleton<_i42.MoodRepository>(
+        () => _i693.MoodRepositoryImpl(gh<_i855.LocalDataSource>()));
     gh.singleton<_i78.AppViewModel>(() => _i78.AppViewModel(
           gh<_i855.LocalDataSource>(),
           gh<_i655.PackageInfo>(),
           gh<_i895.Connectivity>(),
           gh<_i380.AppRepository>(),
         ));
+    gh.factory<_i211.FeelingViewModel>(
+        () => _i211.FeelingViewModel(gh<_i42.MoodRepository>()));
     return this;
   }
 }

@@ -1,9 +1,13 @@
 import 'package:injectable/injectable.dart';
 import 'package:listfull/core/base/base_view_model.dart';
 import 'package:listfull/feature/data/model/mood.dart';
+import 'package:listfull/feature/data/repository/mood_repository.dart';
 
 @injectable
 class FeelingViewModel extends BaseViewModel {
+  final MoodRepository _moodRepository;
+
+  FeelingViewModel(this._moodRepository);
   final List<Mood> moodList = [
     Mood(emoji: '😊', label: 'Happy'),
     Mood(emoji: '😔', label: 'Sad'),
@@ -18,8 +22,20 @@ class FeelingViewModel extends BaseViewModel {
 
   Mood? _selectedMood;
   Mood? get selectedMood => _selectedMood;
-  void setselectedMood(Mood? selectedMood) {
+  Future<void> setselectedMood(Mood? selectedMood) async {
     _selectedMood = selectedMood;
+    await saveMood();
     notifyListeners();
+  }
+
+  Future<void> saveMood() async {
+    if (_selectedMood != null) {
+      await _moodRepository.saveMood(_selectedMood!, DateTime.now());
+    }
+  }
+
+  void getMood() async {
+    final mood = _moodRepository.getMood(DateTime.now());
+    setselectedMood(mood);
   }
 }

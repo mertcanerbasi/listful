@@ -6,8 +6,9 @@ part 'task.g.dart';
 @JsonSerializable()
 class TaskList {
   final List<Task>? tasks;
+  final String date;
 
-  TaskList({required this.tasks});
+  TaskList({required this.tasks, required this.date});
 
   //Json serialization
   factory TaskList.fromJson(Map<String, dynamic> json) {

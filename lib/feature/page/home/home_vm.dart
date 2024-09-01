@@ -35,18 +35,49 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  int _last7daysTaskCount = 25;
-  int get last7daysTaskCount => _last7daysTaskCount;
-  void setlast7daysTaskCount(int last7daysTaskCount) {
-    _last7daysTaskCount = last7daysTaskCount;
+  List<TaskList?>? _last7daysTasks;
+  List<TaskList?>? get last7daysTasks => _last7daysTasks;
+  void setlast7daysTasks(List<TaskList?>? last7daysTasks) {
+    _last7daysTasks = last7daysTasks;
     notifyListeners();
   }
 
-  int _last7daysCompletedTasks = 12;
-  int get last7daysCompletedTasks => _last7daysCompletedTasks;
-  void setlast7daysCompletedTasks(int last7daysCompletedTasks) {
-    _last7daysCompletedTasks = last7daysCompletedTasks;
-    notifyListeners();
+  int get last7daysTaskCount {
+    if (_last7daysTasks == null) return 0;
+    return _last7daysTasks!.fold(
+      0,
+      (previousValue, element) => previousValue + (element?.tasks?.length ?? 0),
+    );
+  }
+
+  int get last7daysCompletedTasks {
+    if (_last7daysTasks == null) return 0;
+    return _last7daysTasks!.fold(
+      0,
+      (previousValue, element) =>
+          previousValue +
+          (element?.tasks?.where((task) => task.completed).length ?? 0),
+    );
+  }
+
+  //Completed Tasks Count for a given date
+  int getCompletedTasksCount(DateTime date) {
+    var taskList = _taskRepository.getTaskList(date);
+    if (taskList == null || taskList.tasks == null) return 0;
+    return taskList.tasks!.where((element) => element.completed).length;
+  }
+
+  //Task Count for a given date
+  int getTaskCount(DateTime date) {
+    var taskList = _taskRepository.getTaskList(date);
+    if (taskList == null || taskList.tasks == null) return 0;
+    return taskList.tasks!.length;
+  }
+
+  List<TaskList?>? getTaskListForLast7Days() {
+    var taskList = _taskRepository.getTaskListForLast7Days(DateTime.now());
+    setlast7daysTasks(taskList);
+    return taskList;
   }
 
   CategoryEnums _selectedCategory = CategoryEnums.overview;

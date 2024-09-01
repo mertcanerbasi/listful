@@ -18,20 +18,22 @@ class ProgressWidget extends StatelessWidget {
       height: 3,
       child: Row(
         children: [
-          Expanded(
-            flex: completedTasks,
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primary,
-                    AppColors.secondary,
-                  ],
+          completedTasks == 0
+              ? const SizedBox()
+              : Expanded(
+                  flex: completedTasks,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primary,
+                          AppColors.secondary,
+                        ],
+                      ),
+                    ),
+                    height: 3,
+                  ),
                 ),
-              ),
-              height: 3,
-            ),
-          ),
           Expanded(
             flex: taskCount - completedTasks,
             child: Container(

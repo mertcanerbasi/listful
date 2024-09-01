@@ -10,10 +10,12 @@ TaskList _$TaskListFromJson(Map<String, dynamic> json) => TaskList(
       tasks: (json['tasks'] as List<dynamic>?)
           ?.map((e) => Task.fromJson(e as Map<String, dynamic>))
           .toList(),
+      date: json['date'] as String,
     );
 
 Map<String, dynamic> _$TaskListToJson(TaskList instance) => <String, dynamic>{
       'tasks': instance.tasks,
+      'date': instance.date,
     };
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(

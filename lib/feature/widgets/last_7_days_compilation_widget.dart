@@ -51,7 +51,7 @@ class Last7DaysCompilationWidget extends StatelessWidget {
             ),
             ProgressWidget(
               completedTasks: last7daysCompletedTasks,
-              taskCount: last7daysTaskCount,
+              taskCount: last7daysTaskCount == 0 ? 1 : last7daysTaskCount,
             ),
             const SizedBox(
               height: 12,

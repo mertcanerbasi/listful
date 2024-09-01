@@ -1,4 +1,5 @@
 import 'package:listfull/core/base/base_widget.dart';
+import 'package:listfull/core/extensions/widget_extensions.dart';
 import 'package:listfull/core/res/colors.gen.dart';
 import 'package:listfull/feature/data/model/enums/category_enums.dart';
 import 'package:listfull/feature/page/home/home_vm.dart';
@@ -25,8 +26,11 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
   @override
   void initState() {
     super.initState();
-    //viewModel.clear();
-    viewModel.getTaskList();
+    // viewModel.clear();
+    endFrame((p0) {
+      viewModel.getTaskList();
+      viewModel.getTaskListForLast7Days();
+    });
   }
 
   @override

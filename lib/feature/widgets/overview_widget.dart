@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:listfull/core/res/colors.gen.dart';
+import 'package:listfull/core/res/constants.dart';
 import 'package:listfull/feature/page/home/home_vm.dart';
 import 'package:listfull/feature/widgets/day_statistics_widget.dart';
 import 'package:listfull/feature/widgets/days_list_widget.dart';
@@ -26,8 +27,8 @@ class OverViewWidget extends StatelessWidget {
           height: 16,
         ),
         TotalTasksWidget(
-          completedTasks: viewModel.completedTasks,
-          taskCount: viewModel.taskCount,
+          completedTasks: viewModel.last7daysCompletedTasks,
+          taskCount: viewModel.last7daysTaskCount,
         ),
         const SizedBox(
           height: 12,
@@ -81,53 +82,21 @@ class OverViewWidget extends StatelessWidget {
                       height: 12,
                     ),
                     Expanded(
-                      child: ListView(
+                      child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        children: [
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Mon",
-                            completed: 3,
-                            total: 5,
+                        itemCount: AppConstants.days.length,
+                        itemBuilder: (context, index) {
+                          return DayStatisticsWidget(
+                            dayAbbreviation: AppConstants.days[index],
+                            completed: viewModel.getCompletedTasksCount(
+                                viewModel.currentDate
+                                    .subtract(Duration(days: (6 - index)))),
+                            total: viewModel.getTaskCount(viewModel.currentDate
+                                .subtract(Duration(days: (6 - index)))),
                             currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Tue",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Wed",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Thu",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Fri",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Sat",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                          DayStatisticsWidget(
-                            dayAbbreviation: "Sun",
-                            completed: 3,
-                            total: 5,
-                            currentDate: viewModel.currentDate,
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     )
                   ],

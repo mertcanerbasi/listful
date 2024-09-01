@@ -22,7 +22,7 @@ class TaskRepositoryImpl implements TaskRepository {
     var yyyyMMdd = date.toYyyyMmDd();
     var taskList = getTaskList(date);
     if (taskList == null || taskList.tasks == null) {
-      taskList = TaskList(tasks: [task]);
+      taskList = TaskList(tasks: [task], date: yyyyMMdd);
     } else {
       taskList.tasks!.add(task);
     }
@@ -32,5 +32,15 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<void> clear() async {
     await _localDataSource.clear();
+  }
+
+  @override
+  List<TaskList?> getTaskListForLast7Days(DateTime date) {
+    List<TaskList?> taskList = [];
+    for (int i = 0; i < 7; i++) {
+      var yyyyMMdd = date.subtract(Duration(days: i)).toYyyyMmDd();
+      taskList.add(_localDataSource.getData(yyyyMMdd, TaskList.fromJson));
+    }
+    return taskList;
   }
 }

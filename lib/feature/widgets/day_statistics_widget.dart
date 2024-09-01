@@ -28,7 +28,7 @@ class DayStatisticsWidget extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                    flex: total - completed,
+                    flex: (total == 0 ? 1 : total) - completed,
                     child: Container(
                       color: day == dayAbbreviation
                           ? AppColors.primary.withOpacity(0.2)
@@ -36,27 +36,29 @@ class DayStatisticsWidget extends StatelessWidget {
                       height: 3,
                     ),
                   ),
-                  Expanded(
-                    flex: completed,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: day == dayAbbreviation
-                            ? const LinearGradient(
-                                colors: [
-                                  AppColors.primary,
-                                  AppColors.secondary,
-                                ],
-                              )
-                            : const LinearGradient(
-                                colors: [
-                                  Colors.grey,
-                                  Colors.grey,
-                                ],
-                              ),
-                      ),
-                      height: 3,
-                    ),
-                  ),
+                  completed == 0
+                      ? const SizedBox()
+                      : Expanded(
+                          flex: completed,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: day == dayAbbreviation
+                                  ? const LinearGradient(
+                                      colors: [
+                                        AppColors.primary,
+                                        AppColors.secondary,
+                                      ],
+                                    )
+                                  : const LinearGradient(
+                                      colors: [
+                                        Colors.grey,
+                                        Colors.grey,
+                                      ],
+                                    ),
+                            ),
+                            height: 3,
+                          ),
+                        ),
                 ],
               ),
             ),

@@ -23,6 +23,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends BaseState<HomeViewModel, HomePage> {
   final TextEditingController _ideaController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.getTaskList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +42,9 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
               onSettingsPressed: () {
                 SettingsRoute().push(context);
               },
-              onAddTaskPressed: () {},
+              onAddTaskPressed: () {
+                NewTaskRoute().push(context);
+              },
               taskCount: viewModel.taskCount,
             ),
             const SizedBox(height: 16),

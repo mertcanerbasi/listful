@@ -111,7 +111,7 @@ class AppLabels {
             ),
             const SizedBox(width: 8),
             Text(
-              "$pieces Pieces",
+              "$pieces Pomodoros",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,

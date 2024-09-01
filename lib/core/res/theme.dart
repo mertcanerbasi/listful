@@ -28,15 +28,15 @@ class AppTheme {
         fontFamily: "Inter",
         splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
-          centerTitle: false,
+          centerTitle: true,
           scrolledUnderElevation: 0,
           backgroundColor: AppColors.background,
           titleTextStyle: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 20,
           ),
-          iconTheme: IconThemeData(color: Colors.white, size: 36),
+          iconTheme: IconThemeData(color: Colors.white, size: 25),
         ),
         dividerTheme: DividerThemeData(
           space: 1,
@@ -127,5 +127,11 @@ class AppTheme {
     gapPadding: 4,
     borderSide: const BorderSide(color: Colors.grey),
     borderRadius: BorderRadius.circular(50),
+  );
+
+  static var noRoundedInputBorder = OutlineInputBorder(
+    gapPadding: 4,
+    borderSide: const BorderSide(color: Colors.transparent),
+    borderRadius: BorderRadius.circular(10),
   );
 }

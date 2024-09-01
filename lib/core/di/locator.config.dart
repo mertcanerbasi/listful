@@ -23,9 +23,13 @@ import 'package:listfull/feature/data/repository/app_repository_impl.dart'
 import 'package:listfull/feature/data/repository/mood_repository.dart' as _i42;
 import 'package:listfull/feature/data/repository/mood_repository_impl.dart'
     as _i693;
+import 'package:listfull/feature/data/repository/task_repository.dart' as _i742;
+import 'package:listfull/feature/data/repository/task_repository_impl.dart'
+    as _i1052;
 import 'package:listfull/feature/data/service/app_service.dart' as _i655;
 import 'package:listfull/feature/page/app/app_vm.dart' as _i78;
 import 'package:listfull/feature/page/home/home_vm.dart' as _i454;
+import 'package:listfull/feature/page/new_task/new_task_vm.dart' as _i361;
 import 'package:listfull/feature/page/settings/settings_vm.dart' as _i843;
 import 'package:listfull/feature/widgets/feeling_widget/feeling_vm.dart'
     as _i211;
@@ -49,7 +53,7 @@ extension GetItInjectableX on _i174.GetIt {
     final apiModule = _$ApiModule();
     final appModule = _$AppModule();
     gh.lazySingleton<_i361.Dio>(() => apiModule.injectRetrofitAPI);
-    gh.factory<_i454.HomeViewModel>(() => _i454.HomeViewModel());
+    gh.factory<_i361.NewTaskViewModel>(() => _i361.NewTaskViewModel());
     gh.singleton<_i481.AppConfig>(
       () => _i481.AppConfigDevImpl(),
       registerFor: {_dev},
@@ -104,6 +108,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i843.SettingsViewModel>(
         () => _i843.SettingsViewModel(gh<_i655.PackageInfo>()));
+    gh.lazySingleton<_i742.TaskRepository>(
+        () => _i1052.TaskRepositoryImpl(gh<_i855.LocalDataSource>()));
     gh.lazySingleton<_i42.MoodRepository>(
         () => _i693.MoodRepositoryImpl(gh<_i855.LocalDataSource>()));
     gh.singleton<_i78.AppViewModel>(() => _i78.AppViewModel(
@@ -114,6 +120,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i211.FeelingViewModel>(
         () => _i211.FeelingViewModel(gh<_i42.MoodRepository>()));
+    gh.factory<_i454.HomeViewModel>(
+        () => _i454.HomeViewModel(gh<_i742.TaskRepository>()));
     return this;
   }
 }

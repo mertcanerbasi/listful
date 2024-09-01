@@ -51,7 +51,7 @@ class NewTaskViewModel extends BaseViewModel {
   }
 
   Future<void> saveTask(Task task) async {
-    await _taskRepository.saveTask(task, DateTime.now());
+    await _taskRepository.saveTask(task, taskDate);
   }
 
   bool checkTaskValid(Task task) {

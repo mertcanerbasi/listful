@@ -20,19 +20,13 @@ class OverViewWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        DaysList(
-          viewModel: viewModel,
-        ),
-        const SizedBox(
-          height: 16,
-        ),
+        DaysList(viewModel: viewModel),
+        const SizedBox(height: 16),
         TotalTasksWidget(
           completedTasks: viewModel.last7daysCompletedTasks,
           taskCount: viewModel.last7daysTaskCount,
         ),
-        const SizedBox(
-          height: 12,
-        ),
+        const SizedBox(height: 12),
         Row(
           children: [
             Last7DaysCompilationWidget(
@@ -62,11 +56,12 @@ class OverViewWidget extends StatelessWidget {
                             ).createShader(bounds);
                           },
                           child: const Text(
-                            "Last 7 Days",
+                            "Current Week",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const Text(
@@ -78,31 +73,39 @@ class OverViewWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
+                    const SizedBox(height: 12),
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: AppConstants.days.length,
                         itemBuilder: (context, index) {
+                          final currentDay = viewModel.currentDate.subtract(
+                              Duration(
+                                  days: viewModel.currentDate.weekday -
+                                      1 -
+                                      index));
+
+                          bool isSelected = viewModel.currentDate.day ==
+                                  currentDay.day &&
+                              viewModel.currentDate.month == currentDay.month &&
+                              viewModel.currentDate.year == currentDay.year;
+
                           return DayStatisticsWidget(
                             dayAbbreviation: AppConstants.days[index],
-                            completed: viewModel.getCompletedTasksCount(
-                                viewModel.currentDate
-                                    .subtract(Duration(days: (6 - index)))),
-                            total: viewModel.getTaskCount(viewModel.currentDate
-                                .subtract(Duration(days: (6 - index)))),
-                            currentDate: viewModel.currentDate,
+                            completed:
+                                viewModel.getCompletedTasksCount(currentDay),
+                            total: viewModel.getTaskCount(currentDay),
+                            currentDate: currentDay,
+                            isSelected: isSelected, // Pass the isSelected flag
                           );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ],

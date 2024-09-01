@@ -28,7 +28,7 @@ class TotalTasksWidget extends StatelessWidget {
                   fontSize: 18,
                 )),
             subtitle: const Text(
-              "Daily tasks",
+              "Last 7 days",
             ),
             leading: Container(
               height: 30,

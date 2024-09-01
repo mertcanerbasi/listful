@@ -30,6 +30,7 @@ import 'package:listfull/feature/data/service/app_service.dart' as _i655;
 import 'package:listfull/feature/page/app/app_vm.dart' as _i78;
 import 'package:listfull/feature/page/home/home_vm.dart' as _i454;
 import 'package:listfull/feature/page/new_task/new_task_vm.dart' as _i361;
+import 'package:listfull/feature/page/pomodoro/pomodoro_vm.dart' as _i281;
 import 'package:listfull/feature/page/settings/settings_vm.dart' as _i843;
 import 'package:listfull/feature/widgets/feeling_widget/feeling_vm.dart'
     as _i211;
@@ -123,6 +124,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i454.HomeViewModel(gh<_i742.TaskRepository>()));
     gh.factory<_i361.NewTaskViewModel>(
         () => _i361.NewTaskViewModel(gh<_i742.TaskRepository>()));
+    gh.factory<_i281.PomodoroViewModel>(
+        () => _i281.PomodoroViewModel(gh<_i742.TaskRepository>()));
     return this;
   }
 }

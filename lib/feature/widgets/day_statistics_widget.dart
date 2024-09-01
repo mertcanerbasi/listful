@@ -7,12 +7,15 @@ class DayStatisticsWidget extends StatelessWidget {
   final int completed;
   final int total;
   final DateTime currentDate;
+  final bool isSelected; // New parameter to indicate selection
+
   const DayStatisticsWidget({
     super.key,
     required this.dayAbbreviation,
     required this.completed,
     required this.total,
     required this.currentDate,
+    required this.isSelected, // Include it in the constructor
   });
 
   @override
@@ -20,6 +23,12 @@ class DayStatisticsWidget extends StatelessWidget {
     String day = DateFormat('EEE').format(currentDate);
     return Container(
       margin: const EdgeInsets.only(right: 8),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? AppColors.primary.withOpacity(0.1)
+            : Colors.transparent, // Change background color based on selection
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         children: [
           Expanded(
@@ -65,8 +74,10 @@ class DayStatisticsWidget extends StatelessWidget {
           ),
           Text(
             dayAbbreviation[0],
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: isSelected
+                  ? AppColors.primary
+                  : Colors.white, // Highlight text color if selected
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),

@@ -6,7 +6,7 @@ class AppLabels {
   static Widget priorityLabel({
     required String text,
     required bool isSelected,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
   }) {
     return ShaderMask(
       shaderCallback: (bounds) {

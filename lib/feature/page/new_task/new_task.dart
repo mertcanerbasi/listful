@@ -67,6 +67,7 @@ class _NewTaskState extends BaseState<NewTaskViewModel, NewTaskPage> {
 class TaskFieldsWidget extends StatelessWidget {
   final NewTaskViewModel viewModel;
   final List<TextEditingController> controllers;
+
   const TaskFieldsWidget({
     super.key,
     required this.viewModel,
@@ -93,9 +94,15 @@ class TaskFieldsWidget extends StatelessWidget {
           decoration: InputDecoration(
             hintText: 'Enter task title 🏆',
             hintStyle: const TextStyle(color: Colors.grey),
-            border: AppTheme.noRoundedInputBorder,
-            enabledBorder: AppTheme.noRoundedInputBorder,
-            focusedBorder: AppTheme.noRoundedInputBorder,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColors.primary),
+              borderRadius: BorderRadius.circular(8),
+            ),
             filled: true,
             fillColor: AppColors.cardBackground,
           ),
@@ -116,9 +123,15 @@ class TaskFieldsWidget extends StatelessWidget {
           decoration: InputDecoration(
             hintText: 'Enter task description ✉️',
             hintStyle: const TextStyle(color: Colors.grey),
-            border: AppTheme.noRoundedInputBorder,
-            enabledBorder: AppTheme.noRoundedInputBorder,
-            focusedBorder: AppTheme.noRoundedInputBorder,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColors.primary),
+              borderRadius: BorderRadius.circular(8),
+            ),
             filled: true,
             fillColor: AppColors.cardBackground,
           ),
@@ -137,14 +150,22 @@ class TaskFieldsWidget extends StatelessWidget {
           style: const TextStyle(color: Colors.white, fontSize: 16),
           controller: controllers[2],
           readOnly: true,
-          onTap: () {},
+          onTap: () {
+            _showDatePicker(context);
+          },
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.calendar_today, color: Colors.white),
             hintText: 'Task Date',
             hintStyle: const TextStyle(color: Colors.grey),
-            border: AppTheme.noRoundedInputBorder,
-            enabledBorder: AppTheme.noRoundedInputBorder,
-            focusedBorder: AppTheme.noRoundedInputBorder,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColors.primary),
+              borderRadius: BorderRadius.circular(8),
+            ),
             filled: true,
             fillColor: AppColors.cardBackground,
           ),
@@ -213,14 +234,8 @@ class TaskFieldsWidget extends StatelessWidget {
           children: [
             Expanded(
               child: IconButton(
-                icon: const Icon(
-                  Icons.remove,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                onPressed: () {
-                  viewModel.decreasePomodoro();
-                },
+                icon: const Icon(Icons.remove, color: Colors.white, size: 24),
+                onPressed: viewModel.decreasePomodoro,
               ),
             ),
             Expanded(
@@ -240,9 +255,7 @@ class TaskFieldsWidget extends StatelessWidget {
             Expanded(
               child: IconButton(
                 icon: const Icon(Icons.add, color: Colors.white, size: 24),
-                onPressed: () {
-                  viewModel.increasePomodoro();
-                },
+                onPressed: viewModel.increasePomodoro,
               ),
             ),
           ],
@@ -261,14 +274,22 @@ class TaskFieldsWidget extends StatelessWidget {
           style: const TextStyle(color: Colors.white, fontSize: 16),
           controller: controllers[3],
           readOnly: true,
-          onTap: () {},
+          onTap: () {
+            _showPomodoroTimePicker(context);
+          },
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.hourglass_bottom, color: Colors.white),
-            hintText: '',
+            hintText: 'Select Pomodoro Time',
             hintStyle: const TextStyle(color: Colors.grey),
-            border: AppTheme.noRoundedInputBorder,
-            enabledBorder: AppTheme.noRoundedInputBorder,
-            focusedBorder: AppTheme.noRoundedInputBorder,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: AppColors.primary),
+              borderRadius: BorderRadius.circular(8),
+            ),
             filled: true,
             fillColor: AppColors.cardBackground,
           ),
@@ -277,46 +298,126 @@ class TaskFieldsWidget extends StatelessWidget {
         AppButtons.gradientBorderButton(
           text: 'Create Task',
           onPressed: () async {
-            if (viewModel.checkTaskValid(
-              Task(
-                title: controllers[0].text,
-                description: controllers[1].text,
-                completed: false,
-                priority: viewModel.selectedPriority,
-                timePiece: List.generate(
-                  viewModel.pomodoroCount,
-                  (index) => Pomodoro(
-                    completed: false,
-                    minutes: viewModel.pomodoroTime,
-                  ),
-                ),
-                id: DateTime.now().millisecondsSinceEpoch,
-              ),
-            )) {
-              await viewModel
-                  .saveTask(
-                Task(
-                  title: controllers[0].text,
-                  description: controllers[1].text,
+            final newTask = Task(
+              title: controllers[0].text,
+              description: controllers[1].text,
+              completed: false,
+              priority: viewModel.selectedPriority,
+              timePiece: List.generate(
+                viewModel.pomodoroCount,
+                (index) => Pomodoro(
                   completed: false,
-                  priority: viewModel.selectedPriority,
-                  timePiece: List.generate(
-                    viewModel.pomodoroCount,
-                    (index) => Pomodoro(
-                      completed: false,
-                      minutes: viewModel.pomodoroTime,
-                    ),
-                  ),
-                  id: DateTime.now().millisecondsSinceEpoch,
+                  minutes: viewModel.pomodoroTime,
                 ),
-              )
-                  .then((value) {
+              ),
+              id: DateTime.now().millisecondsSinceEpoch,
+            );
+            if (viewModel.checkTaskValid(newTask)) {
+              await viewModel.saveTask(newTask).then((value) {
                 Navigator.pop(context, true);
               });
             }
           },
         ),
       ],
+    );
+  }
+
+  void _showDatePicker(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 3650)),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            primaryColor: AppColors.primary,
+            colorScheme: const ColorScheme.dark(
+              primary: AppColors.primary,
+              onSurface: Colors.white,
+            ),
+            dialogBackgroundColor: AppColors.cardBackground,
+          ),
+          child: child!,
+        );
+      },
+    ).then((value) {
+      if (value != null) {
+        controllers[2].text = value.toYyyyMmDd();
+        viewModel.settaskDate(value);
+      }
+    });
+  }
+
+  void _showPomodoroTimePicker(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (c) {
+        return AlertDialog(
+          backgroundColor: AppColors.cardBackground,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PomoTimeTile(
+                time: 15,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(15);
+                  controllers[3].text = '15 minutes';
+                  Navigator.pop(context);
+                },
+              ),
+              PomoTimeTile(
+                time: 20,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(20);
+                  controllers[3].text = '20 minutes';
+                  Navigator.pop(context);
+                },
+              ),
+              // Add more PomoTimeTile widgets as needed
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class PomoTimeTile extends StatelessWidget {
+  const PomoTimeTile({
+    super.key,
+    required this.onPressed,
+    required this.time,
+    required this.selectedPomoTime,
+  });
+
+  final VoidCallback onPressed;
+  final int selectedPomoTime;
+  final int time;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      shaderCallback: (Rect bounds) {
+        return selectedPomoTime == time
+            ? const LinearGradient(
+                colors: [AppColors.primary, AppColors.secondary],
+              ).createShader(bounds)
+            : const LinearGradient(
+                colors: [Colors.white, Colors.white],
+              ).createShader(bounds);
+      },
+      blendMode: BlendMode.srcATop,
+      child: ListTile(
+        leading: const Icon(Icons.timer, color: Colors.white),
+        title: Text('$time minutes'),
+        onTap: onPressed,
+      ),
     );
   }
 }

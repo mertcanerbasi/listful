@@ -9,11 +9,14 @@ import 'package:route_map/route_map.dart';
 import 'package:listfull/feature/page/settings/settings.dart';
 import 'package:listfull/feature/page/home/home.dart';
 import 'package:listfull/feature/page/new_task/new_task.dart';
+import 'package:listfull/feature/page/pomodoro/pomodoro.dart';
+import 'package:listfull/feature/data/model/task.dart';
 
 class RouteMaps {
   static const String settingsRoute = "settings";
   static const String root = "/";
   static const String newTaskRoute = "/new_task_page";
+  static const String pomodoroRoute = "/pomodoro_page";
 }
 
 Map<String, RouteModel> get routes => _routes;
@@ -27,6 +30,11 @@ final Map<String, RouteModel> _routes = {
   RouteMaps.newTaskRoute: RouteModel(
     (_) => const NewTaskPage(),
     fullscreenDialog: true,
+  ),
+  RouteMaps.pomodoroRoute: RouteModel(
+    (c) => PomodoroPage(
+      task: c.routeArgsWithKey<Task>("task")!,
+    ),
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
@@ -50,4 +58,24 @@ class HomeRoute extends BaseRoute {
 class NewTaskRoute extends BaseRoute {
   NewTaskRoute() : super(RouteMaps.newTaskRoute);
   static const String name = RouteMaps.newTaskRoute;
+}
+
+class PomodoroRoute extends BaseRoute {
+  PomodoroRoute({
+    required Task task,
+  }) : super(RouteMaps.pomodoroRoute,
+            args: PomodoroRouteArgs(
+              task: task,
+            ).map);
+  static const String name = RouteMaps.pomodoroRoute;
+}
+
+class PomodoroRouteArgs {
+  final Task task;
+  PomodoroRouteArgs({
+    required this.task,
+  });
+  Map<String, dynamic>? get map => {
+        "task": task,
+      };
 }

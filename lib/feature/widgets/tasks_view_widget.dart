@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:listfull/core/extensions/string_extensions.dart';
 import 'package:listfull/core/res/colors.gen.dart';
 import 'package:listfull/feature/data/model/task.dart';
+import 'package:listfull/feature/router/app_router.routes.dart';
 import 'package:listfull/feature/widgets/app_labels.dart';
 
 class TasksViewWidget extends StatelessWidget {
   final TaskList? taskList;
-
-  const TasksViewWidget({super.key, this.taskList});
+  final VoidCallback onReturnTask;
+  const TasksViewWidget({super.key, this.taskList, required this.onReturnTask});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,13 @@ class TasksViewWidget extends StatelessWidget {
               const SizedBox(height: 8),
               ListTile(
                 contentPadding: EdgeInsets.zero,
+                onTap: () {
+                  PomodoroRoute(task: task).push(context).then((value) {
+                    if (true) {
+                      onReturnTask();
+                    }
+                  });
+                },
                 title: Text(task.title,
                     style: const TextStyle(
                       color: Colors.white,
@@ -69,10 +77,17 @@ class TasksViewWidget extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                trailing: const Icon(
-                  Icons.play_arrow,
-                  color: AppColors.primary,
-                ),
+                trailing: task.completed
+                    ? const Icon(
+                        Icons.check,
+                        color: AppColors.primary,
+                        size: 25,
+                      )
+                    : const Icon(
+                        Icons.play_arrow,
+                        color: AppColors.primary,
+                        size: 25,
+                      ),
               ),
             ],
           ),

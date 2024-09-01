@@ -25,7 +25,7 @@ class Last7DaysCompilationWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Tasks marked in the",
+              "Tasks completed in",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,

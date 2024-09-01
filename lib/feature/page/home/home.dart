@@ -26,7 +26,7 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
   @override
   void initState() {
     super.initState();
-    // viewModel.clear();
+    //viewModel.clear();
     endFrame((p0) {
       viewModel.getTaskList();
       viewModel.getTaskListForLast7Days();
@@ -49,6 +49,7 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
                 NewTaskRoute().push(context).then((value) {
                   if (value == true) {
                     viewModel.getTaskList();
+                    viewModel.getTaskListForLast7Days();
                   }
                 });
               },
@@ -157,6 +158,10 @@ class DayManagementWidget extends StatelessWidget {
         return TasksViewWidget(
           taskList: viewModel.taskList,
           key: const ValueKey('tasks'),
+          onReturnTask: () {
+            viewModel.getTaskList();
+            viewModel.getTaskListForLast7Days();
+          },
         );
       case CategoryEnums.notes:
         return const Text("Notes", key: ValueKey('notes'));

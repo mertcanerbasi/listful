@@ -20,12 +20,12 @@ class TaskList {
 
 @JsonSerializable()
 class Task {
-  final String title;
+  String title;
   final int id;
-  final bool completed;
-  final List<Pomodoro> timePiece;
-  final String description;
-  final PriorityEnums priority;
+  bool completed;
+  List<Pomodoro> timePiece;
+  String description;
+  PriorityEnums priority;
 
   Task({
     required this.title,
@@ -47,7 +47,7 @@ class Task {
 @JsonSerializable()
 class Pomodoro {
   final int minutes;
-  final bool completed;
+  bool completed;
 
   Pomodoro({
     required this.minutes,

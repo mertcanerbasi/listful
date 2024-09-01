@@ -56,7 +56,7 @@ class DaysList extends StatelessWidget {
                           : Colors.grey, // Different color for selected date
                       fontWeight: isSelected
                           ? FontWeight.bold
-                          : FontWeight.w100, // Bold if selected
+                          : FontWeight.normal, // Bold if selected
                     ),
                   ),
                   Text(
@@ -65,7 +65,7 @@ class DaysList extends StatelessWidget {
                       color: isSelected
                           ? AppColors.primary
                           : Colors.grey, // Different color for selected date
-                      fontWeight: FontWeight.bold, // Bold if selected
+                      fontWeight: FontWeight.bold, // Always bold for the date
                     ),
                   ),
                 ],

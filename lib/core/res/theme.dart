@@ -25,6 +25,7 @@ class AppTheme {
         useMaterial3: true,
         colorScheme: colorScheme,
         scaffoldBackgroundColor: AppColors.background,
+        dialogBackgroundColor: AppColors.background,
         fontFamily: "Inter",
         splashColor: Colors.transparent,
         appBarTheme: const AppBarTheme(

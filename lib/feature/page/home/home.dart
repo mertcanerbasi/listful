@@ -43,6 +43,22 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
               date: DateTime.now(),
               onPressed: () {},
             ),
+            const SizedBox(height: 16),
+            AppLabels.pieceLabel(
+              pieces: 5,
+              onPressed: () {},
+            ),
+            const SizedBox(height: 16),
+            AppLabels.timeLabel(
+              time: "4H 45 Min",
+              onPressed: () {},
+            ),
+            const SizedBox(height: 16),
+            AppLabels.categoryLabel(
+              text: "Tasks (5)",
+              isSelected: false,
+              onPressed: () {},
+            ),
           ],
         ),
       ),

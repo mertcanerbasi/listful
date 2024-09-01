@@ -1,0 +1,17 @@
+bricks:
+  core:
+    git:
+      url: "https://github.com/emintolgahanpolat/flutter_mason"
+      path: ./bricks/core
+  repository:
+    git:
+      url: "https://github.com/emintolgahanpolat/flutter_mason"
+      path: ./bricks/repository
+  service:
+    git:
+      url: "https://github.com/emintolgahanpolat/flutter_mason"
+      path: ./bricks/service
+  page:
+    git:
+      url: "https://github.com/emintolgahanpolat/flutter_mason"
+      path: ./bricks/page

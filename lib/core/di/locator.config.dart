@@ -1,0 +1,114 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// InjectableConfigGenerator
+// **************************************************************************
+
+// ignore_for_file: type=lint
+// coverage:ignore-file
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:connectivity_plus/connectivity_plus.dart' as _i895;
+import 'package:dio/dio.dart' as _i361;
+import 'package:get_it/get_it.dart' as _i174;
+import 'package:injectable/injectable.dart' as _i526;
+import 'package:listfull/core/config/app_config.dart' as _i481;
+import 'package:listfull/core/di/module/api_module.dart' as _i697;
+import 'package:listfull/core/di/module/app_module.dart' as _i852;
+import 'package:listfull/core/source/app_storage.dart' as _i133;
+import 'package:listfull/core/source/local_data_source.dart' as _i855;
+import 'package:listfull/feature/data/repository/app_repository.dart' as _i380;
+import 'package:listfull/feature/data/repository/app_repository_impl.dart'
+    as _i634;
+import 'package:listfull/feature/data/service/app_service.dart' as _i655;
+import 'package:listfull/feature/page/app/app_vm.dart' as _i78;
+import 'package:listfull/feature/page/home/home_vm.dart' as _i454;
+import 'package:listfull/feature/page/settings/settings_vm.dart' as _i843;
+import 'package:package_info_plus/package_info_plus.dart' as _i655;
+
+const String _dev = 'dev';
+const String _prod = 'prod';
+const String _test = 'test';
+
+extension GetItInjectableX on _i174.GetIt {
+// initializes the registration of main-scope dependencies inside of GetIt
+  Future<_i174.GetIt> init({
+    String? environment,
+    _i526.EnvironmentFilter? environmentFilter,
+  }) async {
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
+    final apiModule = _$ApiModule();
+    final appModule = _$AppModule();
+    gh.lazySingleton<_i361.Dio>(() => apiModule.injectRetrofitAPI);
+    gh.factory<_i454.HomeViewModel>(() => _i454.HomeViewModel());
+    gh.singleton<_i481.AppConfig>(
+      () => _i481.AppConfigDevImpl(),
+      registerFor: {_dev},
+    );
+    gh.lazySingleton<_i655.AppService>(
+      () => apiModule.appServiceMock,
+      registerFor: {_dev},
+    );
+    await gh.factoryAsync<_i133.AppStorage>(
+      () => appModule.localDataSource,
+      registerFor: {
+        _dev,
+        _prod,
+      },
+      preResolve: true,
+    );
+    await gh.factoryAsync<_i655.PackageInfo>(
+      () => appModule.info,
+      registerFor: {
+        _dev,
+        _prod,
+      },
+      preResolve: true,
+    );
+    gh.factory<_i895.Connectivity>(
+      () => appModule.connectivity,
+      registerFor: {
+        _dev,
+        _prod,
+      },
+    );
+    gh.singleton<_i855.LocalDataSource>(
+      () => _i855.TestLocalDataSourceImpl(),
+      registerFor: {_test},
+    );
+    gh.singleton<_i481.AppConfig>(
+      () => _i481.AppConfigProdImpl(),
+      registerFor: {_prod},
+    );
+    gh.lazySingleton<_i380.AppRepository>(
+        () => _i634.AppRepositoryImpl(gh<_i655.AppService>()));
+    gh.lazySingleton<_i655.AppService>(
+      () => apiModule.appService,
+      registerFor: {_prod},
+    );
+    gh.singleton<_i855.LocalDataSource>(
+      () => _i855.LocalDataSourceImpl(gh<_i133.AppStorage>()),
+      registerFor: {
+        _prod,
+        _dev,
+      },
+    );
+    gh.factory<_i843.SettingsViewModel>(
+        () => _i843.SettingsViewModel(gh<_i655.PackageInfo>()));
+    gh.singleton<_i78.AppViewModel>(() => _i78.AppViewModel(
+          gh<_i855.LocalDataSource>(),
+          gh<_i655.PackageInfo>(),
+          gh<_i895.Connectivity>(),
+          gh<_i380.AppRepository>(),
+        ));
+    return this;
+  }
+}
+
+class _$ApiModule extends _i697.ApiModule {}
+
+class _$AppModule extends _i852.AppModule {}

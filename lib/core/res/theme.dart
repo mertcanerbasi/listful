@@ -49,12 +49,13 @@ class AppTheme {
           ),
         ),
         listTileTheme: ListTileThemeData(
-          iconColor: colorScheme.onSurface.withOpacity(
-            0.5,
-          ),
-          titleTextStyle: TextStyle(
+          iconColor: Colors.white,
+          titleTextStyle: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
+            color: Colors.white,
+          ),
+          subtitleTextStyle: const TextStyle(
+            color: Colors.white,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),

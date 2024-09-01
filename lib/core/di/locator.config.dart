@@ -23,6 +23,10 @@ import 'package:listfull/feature/data/repository/app_repository_impl.dart'
 import 'package:listfull/feature/data/repository/mood_repository.dart' as _i42;
 import 'package:listfull/feature/data/repository/mood_repository_impl.dart'
     as _i693;
+import 'package:listfull/feature/data/repository/notes_repository.dart'
+    as _i351;
+import 'package:listfull/feature/data/repository/notes_repository_impl.dart'
+    as _i93;
 import 'package:listfull/feature/data/repository/task_repository.dart' as _i742;
 import 'package:listfull/feature/data/repository/task_repository_impl.dart'
     as _i1052;
@@ -89,6 +93,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i855.TestLocalDataSourceImpl(),
       registerFor: {_test},
     );
+    gh.lazySingleton<_i351.NotesRepository>(
+        () => _i93.NotesRepositoryImpl(gh<_i855.LocalDataSource>()));
     gh.singleton<_i481.AppConfig>(
       () => _i481.AppConfigProdImpl(),
       registerFor: {_prod},
@@ -110,6 +116,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i843.SettingsViewModel(gh<_i655.PackageInfo>()));
     gh.lazySingleton<_i742.TaskRepository>(
         () => _i1052.TaskRepositoryImpl(gh<_i855.LocalDataSource>()));
+    gh.factory<_i454.HomeViewModel>(() => _i454.HomeViewModel(
+          gh<_i742.TaskRepository>(),
+          gh<_i351.NotesRepository>(),
+        ));
     gh.lazySingleton<_i42.MoodRepository>(
         () => _i693.MoodRepositoryImpl(gh<_i855.LocalDataSource>()));
     gh.singleton<_i78.AppViewModel>(() => _i78.AppViewModel(
@@ -120,8 +130,6 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i211.FeelingViewModel>(
         () => _i211.FeelingViewModel(gh<_i42.MoodRepository>()));
-    gh.factory<_i454.HomeViewModel>(
-        () => _i454.HomeViewModel(gh<_i742.TaskRepository>()));
     gh.factory<_i361.NewTaskViewModel>(
         () => _i361.NewTaskViewModel(gh<_i742.TaskRepository>()));
     gh.factory<_i281.PomodoroViewModel>(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:listfull/core/base/base_widget.dart';
 import 'package:listfull/core/extensions/datetime_extensions.dart';
 import 'package:listfull/core/res/colors.gen.dart';
-import 'package:listfull/core/res/theme.dart';
 import 'package:listfull/feature/data/model/enums/priority_enums.dart';
 import 'package:listfull/feature/data/model/task.dart';
 import 'package:listfull/feature/page/new_task/new_task_vm.dart';
@@ -314,6 +313,7 @@ class TaskFieldsWidget extends StatelessWidget {
             );
             if (viewModel.checkTaskValid(newTask)) {
               await viewModel.saveTask(newTask).then((value) {
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context, true);
               });
             }

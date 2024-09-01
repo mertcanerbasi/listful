@@ -1,14 +1,17 @@
 import 'package:listfull/core/base/base_view_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:listfull/feature/data/model/enums/category_enums.dart';
+import 'package:listfull/feature/data/model/note.dart';
 import 'package:listfull/feature/data/model/task.dart';
+import 'package:listfull/feature/data/repository/notes_repository.dart';
 import 'package:listfull/feature/data/repository/task_repository.dart';
 
 @injectable
 class HomeViewModel extends BaseViewModel {
   final TaskRepository _taskRepository;
+  final NotesRepository _notesRepository;
 
-  HomeViewModel(this._taskRepository);
+  HomeViewModel(this._taskRepository, this._notesRepository);
 
   Future<void> clear() async {
     return await _taskRepository.clear();
@@ -117,7 +120,25 @@ class HomeViewModel extends BaseViewModel {
     await _taskRepository.saveTask(task, _currentDate);
   }
 
-  void addIdea(String idea) {
-    //TODO add idea
+  //Save Note
+  Future<void> saveNote(String note) async {
+    await _notesRepository.saveNotes(Note(
+      note: note,
+      id: "note_${DateTime.now().millisecondsSinceEpoch}",
+    ));
+  }
+
+  //Get Notes
+  NoteList? _noteList;
+  NoteList? get noteList => _noteList;
+  void setnoteList(NoteList? noteList) {
+    _noteList = noteList;
+    notifyListeners();
+  }
+
+  NoteList? getNoteList() {
+    var noteList = _notesRepository.getAllNotes();
+    setnoteList(noteList);
+    return noteList;
   }
 }

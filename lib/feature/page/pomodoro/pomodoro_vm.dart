@@ -59,6 +59,7 @@ class PomodoroViewModel extends BaseViewModel {
   bool get isRunning => _isRunning;
 
   void startTimer() {
+    //TODO Alert will be added
     if (_isRunning) return;
 
     _isRunning = true;

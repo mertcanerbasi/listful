@@ -30,6 +30,7 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
     endFrame((p0) {
       viewModel.getTaskList();
       viewModel.getTaskListForLast7Days();
+      viewModel.getNoteList();
     });
   }
 
@@ -62,11 +63,11 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
             const SizedBox(height: 16),
             NewIdeaWidget(
                 ideaController: _ideaController,
-                onSave: () {
-                  viewModel.addIdea(_ideaController.text);
+                onSave: () async {
+                  await viewModel.saveNote(_ideaController.text);
                   _ideaController.clear();
+                  viewModel.getNoteList();
                 }),
-            //Space for sliding
             const SizedBox(
               height: 60,
             )
@@ -164,7 +165,50 @@ class DayManagementWidget extends StatelessWidget {
           },
         );
       case CategoryEnums.notes:
-        return const Text("Notes", key: ValueKey('notes'));
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              itemCount: (viewModel.noteList?.notes?.length ?? 0) > 5
+                  ? 5
+                  : viewModel.noteList?.notes?.length,
+              itemBuilder: (context, index) {
+                final note = viewModel.noteList?.notes?[index];
+                return ListTile(
+                  title: Text(note!.note,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      )),
+                  leading: const Text(
+                    "💡",
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            if ((viewModel.noteList?.notes?.length ?? 0) > 1)
+              GestureDetector(
+                onTap: () {
+                  //TODO implement view all notes
+                  //NotesRoute().push(context);
+                },
+                child: const Text(
+                  "View All",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+          ],
+        );
       default:
         return Container();
     }

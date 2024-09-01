@@ -3,6 +3,7 @@ import 'package:listfull/core/res/colors.gen.dart';
 import 'package:listfull/feature/data/model/enums/category_enums.dart';
 import 'package:listfull/feature/page/home/home_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:listfull/feature/router/app_router.routes.dart';
 import 'package:listfull/feature/widgets/app_labels.dart';
 import 'package:listfull/feature/widgets/day_statistics_widget.dart';
 import 'package:listfull/feature/widgets/days_list_widget.dart';
@@ -31,8 +32,10 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
           physics: const ClampingScrollPhysics(),
           children: [
             HomeWelcomeWidget(
-              onNotificationPressed: () {},
-              onProfilePressed: () {},
+              onSettingsPressed: () {
+                SettingsRoute().push(context);
+              },
+              onAddTaskPressed: () {},
               taskCount: viewModel.taskCount,
             ),
             const SizedBox(height: 16),
@@ -239,13 +242,13 @@ class DayManagementWidget extends StatelessWidget {
 }
 
 class HomeWelcomeWidget extends StatelessWidget {
-  final VoidCallback onNotificationPressed;
-  final VoidCallback onProfilePressed;
+  final VoidCallback onSettingsPressed;
+  final VoidCallback onAddTaskPressed;
   final int taskCount;
   const HomeWelcomeWidget({
     super.key,
-    required this.onNotificationPressed,
-    required this.onProfilePressed,
+    required this.onSettingsPressed,
+    required this.onAddTaskPressed,
     required this.taskCount,
   });
 
@@ -266,18 +269,18 @@ class HomeWelcomeWidget extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: onNotificationPressed,
+              onPressed: onSettingsPressed,
               icon: const Icon(
-                Icons.notifications_outlined,
+                Icons.settings,
                 size: 36,
                 color: Colors.white,
               ),
             ),
             const SizedBox(width: 8),
             GestureDetector(
-              onTap: onProfilePressed,
+              onTap: onAddTaskPressed,
               child: const Icon(
-                Icons.person,
+                Icons.add,
                 color: Colors.white,
                 size: 36,
               ),

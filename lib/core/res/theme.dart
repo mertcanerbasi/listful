@@ -31,6 +31,12 @@ class AppTheme {
           centerTitle: false,
           scrolledUnderElevation: 0,
           backgroundColor: AppColors.background,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+          iconTheme: IconThemeData(color: Colors.white, size: 36),
         ),
         dividerTheme: DividerThemeData(
           space: 1,

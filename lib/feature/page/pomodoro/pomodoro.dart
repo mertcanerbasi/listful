@@ -5,6 +5,7 @@ import 'package:listfull/core/res/theme.dart';
 import 'package:listfull/feature/data/model/enums/priority_enums.dart';
 import 'package:listfull/feature/data/model/task.dart';
 import 'package:listfull/feature/page/pomodoro/pomodoro_vm.dart';
+import 'package:listfull/feature/widgets/app_buttons.dart';
 import 'package:listfull/feature/widgets/app_labels.dart';
 import 'package:listfull/feature/widgets/scaffold_body.dart';
 import 'package:route_map/route_map.dart';
@@ -232,6 +233,14 @@ class PomodoroTaskFieldsWidget extends StatelessWidget {
               )
               .toList(),
         ),
+        const SizedBox(height: 16),
+        AppButtons.boldOutlinedButton(
+            text: 'Delete Task',
+            onPressed: () async {
+              await viewModel.deleteTask(viewModel.task);
+              Navigator.pop(context, true);
+            },
+            icon: Icons.remove),
         const SizedBox(height: 16),
         const Divider(
           color: AppColors.cardBackground,

@@ -5,4 +5,5 @@ abstract class TaskRepository {
   TaskList? getTaskList(DateTime date);
   Future<void> clear();
   List<TaskList?> getTaskListForLast7Days(DateTime date);
+  Future<void> deleteTask(Task task, DateTime date);
 }

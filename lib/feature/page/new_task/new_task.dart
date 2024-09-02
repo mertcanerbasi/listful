@@ -379,7 +379,51 @@ class TaskFieldsWidget extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-              // Add more PomoTimeTile widgets as needed
+              PomoTimeTile(
+                time: 25,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(25);
+                  controllers[3].text = '25 minutes';
+                  Navigator.pop(context);
+                },
+              ),
+              PomoTimeTile(
+                time: 30,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(30);
+                  controllers[3].text = '30 minutes';
+                  Navigator.pop(context);
+                },
+              ),
+              PomoTimeTile(
+                time: 35,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(35);
+                  controllers[3].text = '35 minutes';
+                  Navigator.pop(context);
+                },
+              ),
+              PomoTimeTile(
+                time: 40,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(40);
+                  controllers[3].text = '40 minutes';
+                  Navigator.pop(context);
+                },
+              ),
+              PomoTimeTile(
+                time: 45,
+                selectedPomoTime: viewModel.pomodoroTime,
+                onPressed: () {
+                  viewModel.setpomodoroTime(45);
+                  controllers[3].text = '45 minutes';
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         );

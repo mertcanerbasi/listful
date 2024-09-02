@@ -78,9 +78,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   List<TaskList?>? getTaskListForLast7Days() {
-    var taskList = _taskRepository.getTaskListForLast7Days(DateTime.now());
-    setlast7daysTasks(taskList);
-    return taskList;
+    var resp = _taskRepository.getTaskListForLast7Days(DateTime.now());
+    setlast7daysTasks(resp);
+    return resp;
   }
 
   CategoryEnums _selectedCategory = CategoryEnums.overview;
@@ -100,20 +100,20 @@ class HomeViewModel extends BaseViewModel {
   //TaskList
   TaskList? _taskList;
   TaskList? get taskList => _taskList;
-  void settaskList(TaskList? taskList) {
-    _taskList = taskList;
-    if (taskList != null && taskList.tasks != null) {
-      setcompletedTasks(
-          taskList.tasks!.where((element) => element.completed).length);
-      settaskCount(taskList.tasks!.length);
-    }
+  void settaskList(TaskList? resp) {
+    _taskList = resp;
+
+    setcompletedTasks(
+        resp?.tasks?.where((element) => element.completed).length ?? 0);
+    settaskCount(resp?.tasks?.length ?? 0);
+
     notifyListeners();
   }
 
   TaskList? getTaskList() {
-    var taskList = _taskRepository.getTaskList(_currentDate);
-    settaskList(taskList);
-    return taskList;
+    var resp = _taskRepository.getTaskList(_currentDate);
+    settaskList(resp);
+    return resp;
   }
 
   Future<void> saveTask(Task task) async {
@@ -140,5 +140,11 @@ class HomeViewModel extends BaseViewModel {
     var noteList = _notesRepository.getAllNotes();
     setnoteList(noteList);
     return noteList;
+  }
+
+  //Delete Task
+  Future<void> deleteTask(Task task) async {
+    await _taskRepository.deleteTask(task, _currentDate);
+    notifyListeners();
   }
 }

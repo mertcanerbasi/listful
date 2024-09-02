@@ -100,4 +100,11 @@ class PomodoroViewModel extends BaseViewModel {
     _timer?.cancel();
     super.dispose();
   }
+
+
+
+  Future<void> deleteTask(Task task) async {
+    await _taskRepository.deleteTask(task, DateTime.now());
+    notifyListeners();
+  }
 }

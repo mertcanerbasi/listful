@@ -159,6 +159,12 @@ class DayManagementWidget extends StatelessWidget {
         return TasksViewWidget(
           taskList: viewModel.taskList,
           key: const ValueKey('tasks'),
+          onDeleteTask: (task) async {
+            await viewModel.deleteTask(task).then((value) {
+              viewModel.getTaskList();
+              viewModel.getTaskListForLast7Days();
+            });
+          },
           onReturnTask: () {
             viewModel.getTaskList();
             viewModel.getTaskListForLast7Days();

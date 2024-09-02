@@ -58,4 +58,26 @@ class TaskRepositoryImpl implements TaskRepository {
     }
     return taskList;
   }
+
+  @override
+  Future<void> deleteTask(Task task, DateTime date) async {
+    var yyyyMMdd = date.toYyyyMmDd();
+    var taskList = getTaskList(date);
+
+    if (taskList == null || taskList.tasks == null || taskList.tasks!.isEmpty) {
+      return Future.value(); // No tasks to delete, return early
+    } else {
+      // Remove the task if it exists in the list
+      taskList.tasks!.removeWhere((t) => t.id == task.id);
+
+      if (taskList.tasks!.isEmpty) {
+        // If all tasks are deleted, remove the entire task list
+        await _localDataSource.setData(yyyyMMdd, null,
+            (m) => {}); // Or remove the key entirely if supported
+      } else {
+        // Update the task list in local storage
+        await _localDataSource.setData(yyyyMMdd, taskList, (m) => m.toJson());
+      }
+    }
+  }
 }

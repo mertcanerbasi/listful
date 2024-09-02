@@ -94,6 +94,7 @@ class AppButtons {
   static Widget boldOutlinedButton({
     required String text,
     required VoidCallback onPressed,
+    IconData? icon,
   }) {
     return GestureDetector(
       onTap: onPressed,
@@ -133,8 +134,8 @@ class AppButtons {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.add,
+                  Icon(
+                    icon ?? Icons.add,
                     color: Colors.white,
                     size: 30,
                   ),

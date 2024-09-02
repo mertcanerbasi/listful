@@ -6,7 +6,7 @@ part 'task.g.dart';
 @JsonSerializable()
 class TaskList {
   final List<Task>? tasks;
-  final String date;
+  final String? date;
 
   TaskList({required this.tasks, required this.date});
 

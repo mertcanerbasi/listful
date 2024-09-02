@@ -8,7 +8,14 @@ import 'package:listfull/feature/widgets/app_labels.dart';
 class TasksViewWidget extends StatelessWidget {
   final TaskList? taskList;
   final VoidCallback onReturnTask;
-  const TasksViewWidget({super.key, this.taskList, required this.onReturnTask});
+  final Function(Task task) onDeleteTask;
+
+  const TasksViewWidget({
+    super.key,
+    this.taskList,
+    required this.onReturnTask,
+    required this.onDeleteTask,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,77 +26,89 @@ class TasksViewWidget extends StatelessWidget {
       itemCount: taskList?.tasks?.length ?? 0,
       itemBuilder: (context, index) {
         final task = taskList?.tasks?[index];
-        return Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: AppColors.cardBackground,
-            borderRadius: BorderRadius.circular(12),
+        return Dismissible(
+          key: Key(task!.id.toString()),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.centerRight,
+            color: Colors.red,
+            child: const Icon(Icons.delete, color: Colors.white),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  AppLabels.priorityLabel(
-                    text: task!.priority.name.capitalizeFirstLetter(),
-                    isSelected: true,
-                    onPressed: () {},
-                  ),
-                  const Spacer(),
-                  AppLabels.categoryLabel(
-                    text: "${task.timePiece.where(
-                          (element) => element.completed,
-                        ).length}/${task.timePiece.length}",
-                    isSelected: true,
-                    color: AppColors.secondary,
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                onTap: () {
-                  PomodoroRoute(task: task).push(context).then((value) {
-                    if (true) {
-                      onReturnTask();
-                    }
-                  });
-                },
-                title: Text(task.title,
+          onDismissed: (direction) {
+            onDeleteTask(task);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.cardBackground,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    AppLabels.priorityLabel(
+                      text: task.priority.name.capitalizeFirstLetter(),
+                      isSelected: true,
+                      onPressed: () {},
+                    ),
+                    const Spacer(),
+                    AppLabels.categoryLabel(
+                      text:
+                          "${task.timePiece.where((element) => element.completed).length}/${task.timePiece.length}",
+                      isSelected: true,
+                      color: AppColors.secondary,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    PomodoroRoute(task: task).push(context).then((value) {
+                      if (value == true) {
+                        onReturnTask();
+                      }
+                    });
+                  },
+                  title: Text(
+                    task.title,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                    )),
-                subtitle: Text(
-                  task.description,
-                ),
-                leading: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.graphic_eq,
-                    color: Colors.white,
+                  subtitle: Text(task.description),
+                  leading: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.graphic_eq,
+                      color: Colors.white,
+                    ),
                   ),
+                  trailing: task.completed
+                      ? const Icon(
+                          Icons.check,
+                          color: AppColors.primary,
+                          size: 25,
+                        )
+                      : const Icon(
+                          Icons.play_arrow,
+                          color: AppColors.primary,
+                          size: 25,
+                        ),
                 ),
-                trailing: task.completed
-                    ? const Icon(
-                        Icons.check,
-                        color: AppColors.primary,
-                        size: 25,
-                      )
-                    : const Icon(
-                        Icons.play_arrow,
-                        color: AppColors.primary,
-                        size: 25,
-                      ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

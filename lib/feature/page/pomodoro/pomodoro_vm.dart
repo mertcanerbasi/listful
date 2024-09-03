@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:alarm/alarm.dart';
+import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:listfull/core/base/base_view_model.dart';
 import 'package:listfull/feature/data/model/enums/priority_enums.dart';
@@ -36,7 +39,7 @@ class PomodoroViewModel extends BaseViewModel {
   void settask(Task task) {
     _task = task;
     setminuteLeft(task.timePiece.first.minutes);
-    setsecondLeft(0);
+    setsecondLeft(10);
     notifyListeners();
   }
 
@@ -58,9 +61,21 @@ class PomodoroViewModel extends BaseViewModel {
   bool _isRunning = false;
   bool get isRunning => _isRunning;
 
-  void startTimer() {
-    //TODO Alert will be added
+  void startTimer() async {
     if (_isRunning) return;
+    final alarmSettings = AlarmSettings(
+      id: 42,
+      dateTime: DateTime.now().add(const Duration(seconds: 10)),
+      assetAudioPath: 'assets/audio/alarm.mp3',
+      vibrate: true,
+      volume: 0.8,
+      fadeDuration: 3.0,
+      notificationTitle: 'Your session is over',
+      notificationBody: 'Time to take a break',
+      enableNotificationOnKill: Platform.isIOS,
+      androidFullScreenIntent: true,
+    );
+    await Alarm.set(alarmSettings: alarmSettings);
 
     _isRunning = true;
     notifyListeners();
@@ -74,8 +89,12 @@ class PomodoroViewModel extends BaseViewModel {
           setsecondLeft(59);
         } else {
           stopTimer();
-          completePomodoro(task.timePiece.indexOf(
-              task.timePiece.firstWhere((element) => !element.completed)));
+          if (task.timePiece
+                  .firstWhereOrNull((element) => !element.completed) !=
+              null) {
+            completePomodoro(task.timePiece.indexOf(task.timePiece
+                .firstWhereOrNull((element) => !element.completed)!));
+          }
         }
       }
     });
@@ -87,12 +106,13 @@ class PomodoroViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void stopTimer() {
+  Future<void> stopTimer() async {
     _timer?.cancel();
     _isRunning = false;
     setminuteLeft(task.timePiece.first.minutes);
     setsecondLeft(0);
     notifyListeners();
+    await Alarm.stop(42);
   }
 
   @override
@@ -100,8 +120,6 @@ class PomodoroViewModel extends BaseViewModel {
     _timer?.cancel();
     super.dispose();
   }
-
-
 
   Future<void> deleteTask(Task task) async {
     await _taskRepository.deleteTask(task, DateTime.now());

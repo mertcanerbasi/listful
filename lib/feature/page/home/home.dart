@@ -121,15 +121,17 @@ class DayManagementWidget extends StatelessWidget {
                 color: AppColors.primary,
                 isSelected: viewModel.selectedCategory == CategoryEnums.tasks,
                 onPressed: () {
+                  if (viewModel.taskCount == 0) return;
                   viewModel.setselectedCategory(CategoryEnums.tasks);
                 },
               ),
               const SizedBox(width: 8),
               AppLabels.categoryLabel(
-                text: "Notes",
+                text: "Notes (${viewModel.noteList?.notes?.length ?? 0})",
                 color: AppColors.primary,
                 isSelected: viewModel.selectedCategory == CategoryEnums.notes,
                 onPressed: () {
+                  if (viewModel.noteList?.notes?.isEmpty ?? true) return;
                   viewModel.setselectedCategory(CategoryEnums.notes);
                 },
               ),

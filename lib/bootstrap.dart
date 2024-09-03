@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:alarm/alarm.dart';
 import 'package:listfull/core/di/locator.dart';
 import 'package:listfull/core/logger.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder, String env) async {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    await Alarm.init();
     await setupDI(env);
     runApp(await builder());
   }, (error, stackTrace) {

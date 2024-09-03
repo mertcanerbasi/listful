@@ -104,15 +104,19 @@ class _PomodoroState extends BaseState<PomodoroViewModel, PomodoroPage> {
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
-                  onPressed: viewModel.stopTimer,
+                  onPressed: () async {
+                    await viewModel
+                        .stopTimer()
+                        .then((value) => Navigator.pop(context, true));
+                  },
                   style: ElevatedButton.styleFrom(
                     disabledBackgroundColor: AppColors.cardBackground,
                     disabledForegroundColor: Colors.white,
                     foregroundColor: Colors.black,
                   ),
-                  child: const Text("Stop",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(viewModel.isRunning ? "Finish" : "Stop",
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),

@@ -1,10 +1,14 @@
 PODS:
+  - alarm (0.0.1):
+    - Flutter
   - app_settings (5.1.1):
     - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
   - Flutter (1.0.0)
+  - flutter_fgbg (0.0.1):
+    - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -25,9 +29,11 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - alarm (from `.symlinks/plugins/alarm/ios`)
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
+  - flutter_fgbg (from `.symlinks/plugins/flutter_fgbg/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -41,12 +47,16 @@ SPEC REPOS:
     - ReachabilitySwift
 
 EXTERNAL SOURCES:
+  alarm:
+    :path: ".symlinks/plugins/alarm/ios"
   app_settings:
     :path: ".symlinks/plugins/app_settings/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
+  flutter_fgbg:
+    :path: ".symlinks/plugins/flutter_fgbg/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   package_info_plus:
@@ -63,9 +73,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  alarm: 6c1f6a9688f94cd6bf8f104c67cc26e78c9d8d13
   app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_fgbg: 31c0d1140a131daea2d342121808f6aa0dcd879d
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46

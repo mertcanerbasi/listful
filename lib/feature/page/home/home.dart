@@ -51,6 +51,8 @@ class _HomePageState extends BaseState<HomeViewModel, HomePage> {
                   if (value == true) {
                     viewModel.getTaskList();
                     viewModel.getTaskListForLast7Days();
+                    viewModel.getTaskCount(viewModel.currentDate);
+                    viewModel.getCompletedTasksCount(viewModel.currentDate);
                   }
                 });
               },
@@ -165,11 +167,15 @@ class DayManagementWidget extends StatelessWidget {
             await viewModel.deleteTask(task).then((value) {
               viewModel.getTaskList();
               viewModel.getTaskListForLast7Days();
+              viewModel.getTaskCount(viewModel.currentDate);
+              viewModel.getCompletedTasksCount(viewModel.currentDate);
             });
           },
           onReturnTask: () {
             viewModel.getTaskList();
             viewModel.getTaskListForLast7Days();
+            viewModel.getTaskCount(viewModel.currentDate);
+            viewModel.getCompletedTasksCount(viewModel.currentDate);
           },
         );
       case CategoryEnums.notes:
@@ -237,9 +243,6 @@ class HomeWelcomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(
-          height: 10,
-        ),
         Row(
           children: [
             const Expanded(

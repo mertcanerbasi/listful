@@ -9,7 +9,7 @@ class ScaffoldBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(right: 16, left: 16, top: 16),
       child: isLoading
           ? const Center(
               child: CircularProgressIndicator(),

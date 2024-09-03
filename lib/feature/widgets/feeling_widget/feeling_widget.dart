@@ -42,8 +42,9 @@ class _FeelingState extends BaseState<FeelingViewModel, FeelingWidget> {
         ),
         const SizedBox(height: 16),
         Wrap(
-          spacing: 8.0, // Space between the chips horizontally
-          runSpacing: 8.0, // Space between the chips vertically
+          spacing: 4.0, // Space between the chips horizontally
+          runSpacing: 4.0, // Space between the chips vertically
+          alignment: WrapAlignment.center,
           children: viewModel.moodList.map((mood) {
             bool isSelected = mood.emoji == viewModel.selectedMood?.emoji;
             return GestureDetector(
@@ -60,6 +61,9 @@ class _FeelingState extends BaseState<FeelingViewModel, FeelingWidget> {
                       width: 2,
                     ),
                   ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment
                         .center, // Center the content horizontally
@@ -72,7 +76,7 @@ class _FeelingState extends BaseState<FeelingViewModel, FeelingWidget> {
                       Text(
                         mood.label,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color: isSelected ? AppColors.primary : Colors.white,
                         ),
                       ),

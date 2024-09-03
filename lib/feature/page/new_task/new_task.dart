@@ -251,10 +251,13 @@ class TaskFieldsWidget extends StatelessWidget {
                     colors: [AppColors.primary, AppColors.secondary],
                   ).createShader(bounds);
                 },
-                child: Text(
-                  viewModel.pomodoroCount.toString(),
-                  style: const TextStyle(color: Colors.white, fontSize: 24),
-                  textAlign: TextAlign.center,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    viewModel.pomodoroCount.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),

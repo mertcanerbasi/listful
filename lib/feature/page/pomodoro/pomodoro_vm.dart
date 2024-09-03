@@ -4,6 +4,7 @@ import 'package:alarm/alarm.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:listfull/core/base/base_view_model.dart';
+import 'package:listfull/core/res/assets.gen.dart';
 import 'package:listfull/feature/data/model/enums/priority_enums.dart';
 import 'package:listfull/feature/data/model/task.dart';
 import 'package:listfull/feature/data/repository/task_repository.dart';
@@ -39,7 +40,7 @@ class PomodoroViewModel extends BaseViewModel {
   void settask(Task task) {
     _task = task;
     setminuteLeft(task.timePiece.first.minutes);
-    setsecondLeft(10);
+    setsecondLeft(0);
     notifyListeners();
   }
 
@@ -65,10 +66,11 @@ class PomodoroViewModel extends BaseViewModel {
     if (_isRunning) return;
     final alarmSettings = AlarmSettings(
       id: 42,
-      dateTime: DateTime.now().add(const Duration(seconds: 10)),
-      assetAudioPath: 'assets/audio/alarm.mp3',
+      dateTime:
+          DateTime.now().add(Duration(seconds: _minuteLeft * 60 + _secondLeft)),
+      assetAudioPath: AppAssets.audio.alarm,
       vibrate: true,
-      volume: 0.8,
+      volume: 1,
       fadeDuration: 3.0,
       notificationTitle: 'Your session is over',
       notificationBody: 'Time to take a break',
@@ -100,10 +102,11 @@ class PomodoroViewModel extends BaseViewModel {
     });
   }
 
-  void pauseTimer() {
+  Future<void> pauseTimer() async {
     _timer?.cancel();
     _isRunning = false;
     notifyListeners();
+    await Alarm.stop(42);
   }
 
   Future<void> stopTimer() async {

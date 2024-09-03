@@ -44,7 +44,8 @@ class OverViewWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ShaderMask(
                           shaderCallback: (Rect bounds) {
@@ -65,7 +66,7 @@ class OverViewWidget extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          " Statistics",
+                          "Statistics",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -73,7 +74,7 @@ class OverViewWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 5),
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,

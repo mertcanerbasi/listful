@@ -19,7 +19,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder, String env) async {
     ]);
     await Alarm.init();
     await setupDI(env);
-    runApp(await builder());
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky)
+        .then((_) async {
+      runApp(await builder());
+    });
   }, (error, stackTrace) {
     Log.e(error.toString(), tag: "Zone Error");
     Log.e(stackTrace.toString(), tag: "Zone StackTrace");

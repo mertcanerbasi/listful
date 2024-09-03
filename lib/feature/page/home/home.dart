@@ -237,6 +237,9 @@ class HomeWelcomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         Row(
           children: [
             const Expanded(

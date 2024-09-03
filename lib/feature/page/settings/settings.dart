@@ -114,25 +114,6 @@ class _SettingsPageState extends BaseState<SettingsViewModel, SettingsPage> {
                   );
                 }),
             const Divider(),
-            ListTile(
-              title: Text(context.l10n.version),
-              leading: const Icon(AppIcons.version),
-              subtitle: Text(viewModel.appVersion),
-            ),
-            const Divider(),
-            ListTile(
-              title: Text(context.l10n.licenses),
-              leading: const Icon(AppIcons.license),
-              trailing: const Icon(AppIcons.chevronRight),
-              onTap: () {
-                showLicensePage(
-                    context: context,
-                    useRootNavigator: true,
-                    applicationName: viewModel.appName,
-                    applicationVersion: viewModel.appVersion,
-                    applicationLegalese: "emintolgahanpolat");
-              },
-            )
           ],
         ),
       ),

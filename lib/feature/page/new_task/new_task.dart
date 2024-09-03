@@ -38,7 +38,14 @@ class _NewTaskState extends BaseState<NewTaskViewModel, NewTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My New Task 💎'), //Diamond Symbol
+        title: ShaderMask(
+            shaderCallback: const LinearGradient(
+              colors: [
+                AppColors.primary,
+                AppColors.secondary,
+              ],
+            ).createShader,
+            child: const Text('My New Task 💎')), //Diamond Symbol
       ),
       body: ScaffoldBody(
         isLoading: false,

@@ -34,6 +34,7 @@ import 'package:listfull/feature/data/service/app_service.dart' as _i655;
 import 'package:listfull/feature/page/app/app_vm.dart' as _i78;
 import 'package:listfull/feature/page/home/home_vm.dart' as _i454;
 import 'package:listfull/feature/page/new_task/new_task_vm.dart' as _i361;
+import 'package:listfull/feature/page/notes/notes_vm.dart' as _i877;
 import 'package:listfull/feature/page/pomodoro/pomodoro_vm.dart' as _i281;
 import 'package:listfull/feature/page/settings/settings_vm.dart' as _i843;
 import 'package:listfull/feature/widgets/feeling_widget/feeling_vm.dart'
@@ -116,6 +117,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i843.SettingsViewModel(gh<_i655.PackageInfo>()));
     gh.lazySingleton<_i742.TaskRepository>(
         () => _i1052.TaskRepositoryImpl(gh<_i855.LocalDataSource>()));
+    gh.factory<_i877.NotesViewModel>(
+        () => _i877.NotesViewModel(gh<_i351.NotesRepository>()));
     gh.factory<_i454.HomeViewModel>(() => _i454.HomeViewModel(
           gh<_i742.TaskRepository>(),
           gh<_i351.NotesRepository>(),

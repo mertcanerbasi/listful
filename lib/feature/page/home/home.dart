@@ -144,13 +144,13 @@ class DayManagementWidget extends StatelessWidget {
           transitionBuilder: (Widget child, Animation<double> animation) {
             return FadeTransition(opacity: animation, child: child);
           },
-          child: _getSelectedWidget(viewModel.selectedCategory),
+          child: _getSelectedWidget(viewModel.selectedCategory, context),
         ),
       ],
     );
   }
 
-  Widget _getSelectedWidget(CategoryEnums category) {
+  Widget _getSelectedWidget(CategoryEnums category, BuildContext context) {
     switch (category) {
       case CategoryEnums.overview:
         return OverViewWidget(
@@ -201,8 +201,7 @@ class DayManagementWidget extends StatelessWidget {
             if ((viewModel.noteList?.notes?.length ?? 0) > 1)
               GestureDetector(
                 onTap: () {
-                  //TODO implement view all notes
-                  //NotesRoute().push(context);
+                  NotesRoute().push(context);
                 },
                 child: const Text(
                   "View All",

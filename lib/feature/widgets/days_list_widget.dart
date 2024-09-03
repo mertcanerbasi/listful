@@ -36,6 +36,9 @@ class DaysList extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               viewModel.setcurrentDate(lastSevenDays[index]);
+              viewModel.getCompletedTasksCount(viewModel.currentDate);
+              viewModel.getTaskCount(viewModel.currentDate);
+              viewModel.getTaskList();
             },
             child: Container(
               height: 80,
